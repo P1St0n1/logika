@@ -45,5 +45,20 @@ int main(void) {
 	  }
 	  free(mas);
 
+	  printf("\n\n\n");
+
+	  //Задание 4
+	  int arr[5][5] = { 0 };
+
+	  for (int i = 0; i < 5; i++) {
+			int sum = 0;
+			for (int j = 0; j < 5; j++) {
+				  arr[i][j] = (i + j) * 2 - 5;
+				  sum += arr[i][j];
+				  printf("%d\t", arr[i][j]);
+			}
+			printf("sum = %d\n", sum);
+	  }
+
 	  return 0;
 }
