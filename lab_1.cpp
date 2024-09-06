@@ -31,7 +31,19 @@ int main(void) {
 			printf("%d ", a[i]);
 	  }
 
-	  
+	  printf("\nn = ");
+
+	  //Задание 3
+	  int* mas;
+	  int n = 0;
+	  scanf_s("%d", &n);
+
+	  mas = (int*)malloc(n * sizeof(int));
+
+	  for (int i = 0; i < n; i++) {
+			printf("%d ", i * 3 - 10);
+	  }
+	  free(mas);
 
 	  return 0;
 }
