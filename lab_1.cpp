@@ -1,7 +1,41 @@
-﻿#include <stdio.h>
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
 #include <limits.h>
 #include <random>
 #include <time.h>
+#include <Windows.h>
+#include <string.h>
+
+struct student {
+	  char last_name[20];
+	  char name[20], faculty[20];
+	  int num_zach;
+};
+
+void print_struct(struct student* p_stud) {
+
+	  size_t len;
+
+	  for (int i = 0; i < 3; i++) {
+			len = strlen(p_stud[i].last_name);
+			if (len > 0 && p_stud[i].last_name[len - 1] == '\n')
+				  p_stud[i].last_name[len - 1] = '\0';
+
+			len = strlen(p_stud[i].name);
+			if (len > 0 && p_stud[i].name[len - 1] == '\n')
+				  p_stud[i].name[len - 1] = '\0';
+
+			len = strlen(p_stud[i].faculty);
+			if (len > 0 && p_stud[i].faculty[len - 1] == '\n')
+				  p_stud[i].faculty[len - 1] = '\0';
+
+			printf("%-10s", p_stud[i].last_name);
+			printf("%-10s", p_stud[i].name);
+			printf("%-10s", p_stud[i].faculty);
+			printf("%-7d", p_stud[i].num_zach);
+			printf("\n");
+	  }
+};
 
 int main(void) {
 
@@ -58,6 +92,46 @@ int main(void) {
 				  printf("%d\t", arr[i][j]);
 			}
 			printf("sum = %d\n", sum);
+	  }
+
+	  //Задание 5
+	  SetConsoleCP(1251);
+	  SetConsoleOutputCP(1251);
+	  
+	  struct student stud[3];
+
+	  for (int i = 0; i < 3; i++) {
+			printf("Введите фамилию студента %d\n", i + 1);
+			getchar();
+			fgets(stud[i].last_name, sizeof stud[i].last_name, stdin);
+
+			printf("Введите имя студента %d\n", i + 1);
+			fgets(stud[i].name, sizeof stud[i].name, stdin);
+
+			printf("Введите название факультета студента %d\n", i + 1);
+			fgets(stud[i].faculty, sizeof stud[i].faculty, stdin);
+
+			printf("Введите номер зачётной книжки студента %d\n", i + 1);
+			scanf("%d", &stud[i].num_zach);
+	  }
+
+	  printf("\n\n\n");
+
+	  struct student* ps = stud;
+
+	  print_struct(ps);
+
+	  printf("\nВведите фамилию студента: ");
+	  char f[20];
+	  scanf("%s", f);
+
+	  for (int i = 0; i < 3; i++) {
+			if (strcmp(f, stud[i].last_name) == 0) {
+				  printf("%-10s", stud[i].last_name);
+				  printf("%-10s", stud[i].name);
+				  printf("%-10s", stud[i].faculty);
+				  printf("%-7d", stud[i].num_zach);
+			}
 	  }
 
 	  return 0;
