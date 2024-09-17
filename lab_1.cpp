@@ -6,36 +6,14 @@
 #include <Windows.h>
 #include <string.h>
 
-struct student {
+typedef struct student {
 	  char last_name[20];
 	  char name[20], faculty[20];
 	  int num_zach;
-};
+	  struct student* next;
+} stud;
 
-void print_struct(struct student* p_stud) {
-
-	  size_t len;
-
-	  for (int i = 0; i < 3; i++) {
-			len = strlen(p_stud[i].last_name);
-			if (len > 0 && p_stud[i].last_name[len - 1] == '\n')
-				  p_stud[i].last_name[len - 1] = '\0';
-
-			len = strlen(p_stud[i].name);
-			if (len > 0 && p_stud[i].name[len - 1] == '\n')
-				  p_stud[i].name[len - 1] = '\0';
-
-			len = strlen(p_stud[i].faculty);
-			if (len > 0 && p_stud[i].faculty[len - 1] == '\n')
-				  p_stud[i].faculty[len - 1] = '\0';
-
-			printf("%-10s", p_stud[i].last_name);
-			printf("%-10s", p_stud[i].name);
-			printf("%-10s", p_stud[i].faculty);
-			printf("%-7d", p_stud[i].num_zach);
-			printf("\n");
-	  }
-};
+void print_struct(stud* head);
 
 int main(void) {
 
@@ -97,42 +75,83 @@ int main(void) {
 	  //Задание 5
 	  SetConsoleCP(1251);
 	  SetConsoleOutputCP(1251);
-	  
-	  struct student stud[3];
 
-	  for (int i = 0; i < 3; i++) {
-			printf("Введите фамилию студента %d\n", i + 1);
+	  char sim = 0;
+	  scanf("%c", &sim);
+
+	  stud* head = NULL;
+	  stud* tail = NULL;
+
+	  while (sim != '+') {
+			stud* newData = (stud*)malloc(sizeof(stud));
+
+			printf("Введите фамилию студента\n");
+			scanf("%s", &newData->last_name);
+
+			printf("Введите имя студента\n");
+			scanf("%s", &newData->name);
+
+			printf("Введите название факультета студента\n");
+			scanf("%s", &newData->faculty);
+
+			printf("Введите номер зачётной книжки студента\n");
+			scanf("%d", &newData->num_zach);
+
+			newData->next = NULL;
+
+			if (head == NULL) {
+				  head = newData;
+				  tail = newData;
+			}
+			else {
+				  tail->next = newData;
+				  tail = newData;
+			}
+
+			printf("\n\nЧтобы закончить введите '+', иначе введите любой другой символ\n");
 			getchar();
-			fgets(stud[i].last_name, sizeof stud[i].last_name, stdin);
-
-			printf("Введите имя студента %d\n", i + 1);
-			fgets(stud[i].name, sizeof stud[i].name, stdin);
-
-			printf("Введите название факультета студента %d\n", i + 1);
-			fgets(stud[i].faculty, sizeof stud[i].faculty, stdin);
-
-			printf("Введите номер зачётной книжки студента %d\n", i + 1);
-			scanf("%d", &stud[i].num_zach);
+			scanf("%c", &sim);
+			printf("\n\n");
 	  }
 
-	  printf("\n\n\n");
 
-	  struct student* ps = stud;
-
-	  print_struct(ps);
+	  print_struct(head);
 
 	  printf("\nВведите фамилию студента: ");
 	  char f[20];
-	  scanf("%s", f);
+	  scanf("%s", &f);
 
-	  for (int i = 0; i < 3; i++) {
-			if (strcmp(f, stud[i].last_name) == 0) {
-				  printf("%-10s", stud[i].last_name);
-				  printf("%-10s", stud[i].name);
-				  printf("%-10s", stud[i].faculty);
-				  printf("%-7d", stud[i].num_zach);
+	  stud* ptr = head;
+
+	  while (ptr != NULL) {
+			stud* tmp = ptr;
+			if (strcmp(f, tmp->last_name) == 0) {
+				  printf("%-10s %-10s %-10s %-7d\n", tmp->last_name, tmp->name, tmp->faculty, tmp->num_zach);
 			}
+			ptr = ptr->next;
+	  }
+
+	  stud* pt = head;
+	  while (pt != NULL) {
+			stud* tmp = pt;
+			pt = pt->next;
+			free(tmp);
 	  }
 
 	  return 0;
+}
+
+
+
+void print_struct(stud* head) {
+			printf("\n");
+
+			stud* ptr = head;
+			while (ptr != NULL) {
+				  printf("%-10s %-10s %-10s %-7d\n", ptr->last_name, ptr->name, ptr->faculty, ptr->num_zach);
+
+				  ptr = ptr->next;
+			}
+
+			printf("\n");
 }
