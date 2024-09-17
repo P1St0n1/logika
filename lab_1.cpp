@@ -36,11 +36,11 @@ int main(void) {
 	  printf("\nresult = %d\n", max - min);
 
 	  //Задание 2
-	  int a[10] = { 0 };
+	  int arr[10] = { 0 };
 
 	  for (int i = 0; i < 10; i++) {
-			a[i] = rand() % 100;
-			printf("%d ", a[i]);
+			arr[i] = rand() % 100;
+			printf("%d ", arr[i]);
 	  }
 
 	  printf("\nn = ");
@@ -60,21 +60,49 @@ int main(void) {
 	  printf("\n\n\n");
 
 	  //Задание 4
-	  int arr[5][5] = { 0 };
+	  SetConsoleCP(1251);
+	  SetConsoleOutputCP(1251);
 
-	  for (int i = 0; i < 5; i++) {
+	  int b = 0, sum = 0;
+
+	  printf("Введите количество строк/столбцов квадратного массива: ");
+	  scanf("%d", &b);
+
+	  int** a = (int**)malloc(b * sizeof(int*));
+
+	  for (int i = 0; i < b; i++) {
+			a[i] = (int*)malloc(b * sizeof(int));
+			for (int j = 0; j < b; j++) {
+				  printf("a[%d][%d] = ", i, j);
+				  scanf("%d", &a[i][j]);
+			}
+	  }
+
+	  for (int i = 0; i < b; i++) {
 			int sum = 0;
-			for (int j = 0; j < 5; j++) {
-				  arr[i][j] = (i + j) * 2 - 5;
-				  sum += arr[i][j];
-				  printf("%d\t", arr[i][j]);
+			for (int j = 0; j < b; j++) {
+				  printf("%d\t", a[i][j]);
+				  sum += a[i][j];
 			}
 			printf("sum = %d\n", sum);
 	  }
 
+	  int count = 0;
+
+	  for (int i = 0; i < b; i++) {
+			for (int j = 0; j < i + 1; j++) {
+				  if (a[i][j] == 0) {
+							  count += 1;
+				  }
+			}
+	  }
+	  printf("Количество 0-элементов на главной диагонали и ниже: %d\n", count);
+	  for (int i = 0; i < b; i++)
+			free(a[i]);
+	  free(a);
+
+
 	  //Задание 5
-	  SetConsoleCP(1251);
-	  SetConsoleOutputCP(1251);
 
 	  char sim = 0;
 	  scanf("%c", &sim);
