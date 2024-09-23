@@ -145,7 +145,10 @@ int main(void) {
 	  int* a = (int*)malloc(size * sizeof(int));
 	  //printf("Исходный массив:\n");
 	  for (int i = 0; i < size; i++) {
-			a[i] = rand() % 100000 + 1;
+			if (i == size / 2)
+				  a[i] = i;
+			else
+				  a[i] = size - i;
 			//printf("%d   ", a[i]);
 	  }
 	  printf("\n\n");
@@ -166,7 +169,10 @@ int main(void) {
 	  int* b = (int*)malloc(size * sizeof(int));
 	  //printf("Исходный массив:\n");
 	  for (int i = 0; i < size; i++) {
-			b[i] = rand() % 100000 + 1;
+			if (i == size / 2)
+				  b[i] = i;
+			else
+				  b[i] = size - i;
 			//printf("%d   ", a[i]);
 	  }
 	  printf("\n\n");
@@ -186,7 +192,10 @@ int main(void) {
 	  int* c = (int*)malloc(size * sizeof(int));
 	  //printf("Исходный массив:\n");
 	  for (int i = 0; i < size; i++) {
-			c[i] = rand() % 100000 + 1;
+			if (i == size / 2)
+				  c[i] = i;
+			else
+				  c[i] = size - i;
 			//printf("%d   ", c[i]);
 	  }
 	  printf("\n\n");
