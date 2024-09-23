@@ -77,6 +77,7 @@
 #include <Windows.h>
 #include <random>
 #include <time.h>
+#include <stdlib.h>
 
 void ShellSort(int n, int arr[]) {
 
@@ -95,7 +96,7 @@ void ShellSort(int n, int arr[]) {
 
 }
 
-void qs(int* items, int left, int right) //вызов функции: qs(items, 0, count-1);
+void qs(int* items, int left, int right) /*вызов функции: qs(items, 0, count-1);*/
 {
 	  int i = 0, j = 0, x = 0, y = 0;
 
@@ -122,6 +123,11 @@ void qs(int* items, int left, int right) //вызов функции: qs(items, 
 			qs(items, i, right);
 }
 
+int compare(const void* x1, const void* x2)   /*функция сравнения элементов массива*/
+{
+	  return (*(int*)x1 - *(int*)x2);              /*если результат вычитания равен 0, то числа равны, < 0: x1 < x2; > 0: x1 > x2*/
+}
+
 
 int main(void) {
 
@@ -130,43 +136,71 @@ int main(void) {
 
 	  srand(time(NULL));
 
+	  clock_t start, end;
+
 	  int size = 0;
 	  printf("Введите размер массива: ");
 	  scanf_s("%d", &size);
-	  //Метод Шелла
+	  /*Метод Шелла*/
 	  int* a = (int*)malloc(size * sizeof(int));
-	  printf("Исходный массив:\n");
+	  //printf("Исходный массив:\n");
 	  for (int i = 0; i < size; i++) {
-			a[i] = rand() % 100 + 1;
-			printf("%d   ", a[i]);
+			a[i] = rand() % 100000 + 1;
+			//printf("%d   ", a[i]);
 	  }
 	  printf("\n\n");
 
+	  start = clock();
 	  ShellSort(size, a);
-	  printf("Отсортированный массив методом Шелла:\n");
-	  for (int i = 0; i < size; i++)
-			printf("%d   ", a[i]);
-	  printf("\n");
+	  end = clock();
+
+	  //printf("Отсортированный массив методом Шелла:\n");
+	  //for (int i = 0; i < size; i++)
+			//printf("%d   ", a[i]);
+	  printf("\nВремя выполнения сортировки в мс: %f\n", (double)(end - start) * 1000 / CLOCKS_PER_SEC);
 
 	  free(a);
 
 	  printf("\n\n");
-	  //Метод qs
+	  /*Метод qs*/
 	  int* b = (int*)malloc(size * sizeof(int));
-	  printf("Исходный массив:\n");
+	  //printf("Исходный массив:\n");
 	  for (int i = 0; i < size; i++) {
-			b[i] = rand() % 100 + 1;
-			printf("%d   ", a[i]);
+			b[i] = rand() % 100000 + 1;
+			//printf("%d   ", a[i]);
 	  }
 	  printf("\n\n");
 
+	  start = clock();
 	  qs(b, 0, size - 1);
-	  printf("Отсортированный массив методом qs:\n");
-	  for (int i = 0; i < size; i++)
-			printf("%d   ", b[i]);
-	  printf("\n");
+	  end = clock();
+
+	  //printf("Отсортированный массив методом qs:\n");
+	  //for (int i = 0; i < size; i++)
+			//printf("%d   ", b[i]);
+	  printf("\nВремя выполнения сортировки в мс: %f\n", (double)(end - start) * 1000 / CLOCKS_PER_SEC);
 
 	  free(b);
 
-	  return 0;
+	  /*Метод qsort*/
+	  int* c = (int*)malloc(size * sizeof(int));
+	  //printf("Исходный массив:\n");
+	  for (int i = 0; i < size; i++) {
+			c[i] = rand() % 100000 + 1;
+			//printf("%d   ", c[i]);
+	  }
+	  printf("\n\n");
+
+	  start = clock();
+	  qsort(c, size, sizeof(int), compare);
+	  end = clock();
+
+	  //printf("Отсортированный массив методом qs:\n");
+	  //for (int i = 0; i < size; i++)
+			//printf("%d   ", c[i]);
+	  printf("\nВремя выполнения сортировки в мс: %f\n", (double)(end - start) * 1000 / CLOCKS_PER_SEC);
+
+	  free(c);
+
+	  return 0;	  
 }
