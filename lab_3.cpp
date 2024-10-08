@@ -64,8 +64,8 @@ int spstore(void) {
 			last = p;
 	  }
 	  else if (head != NULL && p != NULL) {
-			last->next = p;
-			last = p;
+			p->next = head;
+			head = p;
 	  }
 	  printf("Продолжить ввод? (+ или -)\n");
 	  scanf(" %c", &ch);
