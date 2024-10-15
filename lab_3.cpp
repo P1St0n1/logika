@@ -9,13 +9,14 @@
 
 struct node {
 	  char inf[256];  // полезная информация
+	  int priority;
 	  struct node* next; // ссылка на следующий элемент 
 };
 
 struct node* head = NULL, * last = NULL, * f = NULL; // указатели на первый и последний элементы списка
 int dlinna = 0;
 char ch = '+';
-int n = 0;
+int next = 0;
 
 // Функции добавления элемента, просмотра списка
 int spstore(void);
@@ -31,6 +32,7 @@ struct node* get_struct(void)
 {
 	  struct node* p = NULL;
 	  char s[256];
+	  int pr = 0;
 
 	  if ((p = (node*)malloc(sizeof(struct node))) == NULL)  // выделяем память под новый элемент списка
 	  {
@@ -47,6 +49,10 @@ struct node* get_struct(void)
 	  }
 	  strcpy(p->inf, s);
 
+	  printf("Приоритет объекта: \n");   // вводим данные
+	  scanf_s("%d", &pr);
+
+	  p->priority = pr;
 	  p->next = NULL;
 
 	  return p;		// возвращаем указатель на созданный элемент
@@ -55,6 +61,7 @@ struct node* get_struct(void)
 /* Последовательное добавление в список элемента (в конец)*/
 int spstore(void) {
 	  struct node* p = NULL;
+	  struct node* x = NULL;
 	  struct node* struc = head;
 
 	  p = get_struct();
@@ -64,20 +71,40 @@ int spstore(void) {
 			last = p;
 	  }
 	  else if (head != NULL && p != NULL) {
-			p->next = head;
-			head = p;
+			if ((struc->priority < p->priority) && (struc->next == NULL)) {
+				  struc->next = p;
+				  last = p;
+			}
+			while (struc) {
+				  if ((struc->priority <= p->priority)) {
+						x = struc;
+						struc = struc->next;
+				  }
+				  else {
+						p->next = struc;
+						if (x != NULL) {
+							  x->next = p;
+						}
+						if (struc == head) {
+							  head = p;
+						}
+
+						break;
+				  }
+
+			}
 	  }
 	  printf("Продолжить ввод? (+ или -)\n");
 	  scanf(" %c", &ch);
 	  getchar();
 	  if (ch == '+') {
-			n = 1;
+			next = 1;
 	  }
 	  else {
-			n = 0;
+			next = 0;
 	  }
 
-	  return n;
+	  return next;
 }
 
 
@@ -89,7 +116,7 @@ void review(void)
 			printf("Список пуст\n");
 	  }
 	  while (struc) {
-			printf("Имя - %s \n", struc->inf);
+			printf("Имя - %s, Приоритет - %d \n", struc->inf, struc->priority);
 			struc = struc->next;
 	  }
 	  return;
@@ -115,7 +142,7 @@ struct node* find(char* name)
 	  return NULL;
 }
 
-/*Удаление элемента по содержимому*/
+/* Удаление элемента по содержимому. */
 void del(char* name)
 {
 	  struct node* struc = head; // указатель, проходящий по списку установлен на начало списка
@@ -161,8 +188,8 @@ void del(char* name)
 			}
 			else // если не нашли, то
 			{
-				  prev = struc; // устанавливаем указатели для продолжения поиска
-				  struc = struc->next;
+				prev = struc; // устанавливаем указатели для продолжения поиска
+				struc = struc->next;
 			}
 	  }
 
@@ -176,6 +203,7 @@ void del(char* name)
 }
 
 
+
 int main(void) {
 
 	  SetConsoleCP(1251);
@@ -184,40 +212,12 @@ int main(void) {
 	  printf("Символ окончания ввода: - \n");
 	  spstore();
 
-	  while (n == 1)
-			n = spstore();
+	  while (next == 1)
+			next = spstore();
 	  review();
 
 	  return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -300,18 +300,17 @@ int main(void) {
 //
 //struct node {
 //	  char inf[256];  // полезная информация
-//	  int priority;
 //	  struct node* next; // ссылка на следующий элемент 
 //};
 //
 //struct node* head = NULL, * last = NULL, * f = NULL; // указатели на первый и последний элементы списка
 //int dlinna = 0;
 //char ch = '+';
-//int next = 0;
+//int n = 0;
 //
 //// Функции добавления элемента, просмотра списка
 //int spstore(void);
-//void review(void), del(char* name);
+//void review(void), del();
 //
 //char find_el[256];
 //struct node* find(char* name); // функция нахождения элемента
@@ -323,7 +322,6 @@ int main(void) {
 //{
 //	  struct node* p = NULL;
 //	  char s[256];
-//	  int pr = 0;
 //
 //	  if ((p = (node*)malloc(sizeof(struct node))) == NULL)  // выделяем память под новый элемент списка
 //	  {
@@ -340,10 +338,6 @@ int main(void) {
 //	  }
 //	  strcpy(p->inf, s);
 //
-//	  printf("Приоритет объекта: \n");   // вводим данные
-//	  scanf_s("%d", &pr);
-//
-//	  p->priority = pr;
 //	  p->next = NULL;
 //
 //	  return p;		// возвращаем указатель на созданный элемент
@@ -352,8 +346,6 @@ int main(void) {
 ///* Последовательное добавление в список элемента (в конец)*/
 //int spstore(void) {
 //	  struct node* p = NULL;
-//	  struct node* x = NULL;
-//	  struct node* n = NULL;
 //	  struct node* struc = head;
 //
 //	  p = get_struct();
@@ -363,42 +355,20 @@ int main(void) {
 //			last = p;
 //	  }
 //	  else if (head != NULL && p != NULL) {
-//			while (struc) {
-//				  n = struc->next;
-//				  if ((struc->priority < p->priority) && (n == NULL)) {
-//						struc->next = p;
-//						last = p;
-//						break;
-//				  }
-//				  else if ((struc->priority > p->priority)) {
-//						p->next = struc;
-//						if (x != NULL) {
-//							  x->next = p;
-//						}
-//						if (struc == head) {
-//							  head = p;
-//						}
-//
-//						break;
-//				  }
-//				  else if ((struc->priority <= p->priority)) {
-//						x = struc;
-//						struc = struc->next;
-//				  }
-//
-//			}
+//			p->next = head;
+//			head = p;
 //	  }
 //	  printf("Продолжить ввод? (+ или -)\n");
 //	  scanf(" %c", &ch);
 //	  getchar();
 //	  if (ch == '+') {
-//			next = 1;
+//			n = 1;
 //	  }
 //	  else {
-//			next = 0;
+//			n = 0;
 //	  }
 //
-//	  return next;
+//	  return n;
 //}
 //
 //
@@ -410,7 +380,7 @@ int main(void) {
 //			printf("Список пуст\n");
 //	  }
 //	  while (struc) {
-//			printf("Имя - %s, Приоритет - %d \n", struc->inf, struc->priority);
+//			printf("Имя - %s \n", struc->inf);
 //			struc = struc->next;
 //	  }
 //	  return;
@@ -436,12 +406,11 @@ int main(void) {
 //	  return NULL;
 //}
 //
-///* Удаление элемента по содержимому. */
-//void del(char* name)
+///*Удаление элемента по содержимому*/
+//void del()
 //{
 //	  struct node* struc = head; // указатель, проходящий по списку установлен на начало списка
 //	  struct node* prev = NULL;// указатель на предшествующий удаляемому элемент
-//	  int flag = 0;      // индикатор отсутствия удаляемого элемента в списке
 //
 //	  if (head == NULL) // если голова списка равна NULL, то список пуст
 //	  {
@@ -449,53 +418,11 @@ int main(void) {
 //			return;
 //	  }
 //
-//	  if (strcmp(name, struc->inf) == 0) // если удаляемый элемент - первый
-//	  {
-//			flag = 1;
-//			head = struc->next; // установливаем голову на следующий элемент
-//			free(struc);  // удаляем первый элемент
-//			struc = head; // устанавливаем указатель для продолжения поиска
-//	  }
-//	  else
-//	  {
-//			prev = struc;
-//			struc = struc->next;
-//	  }
-//
-//	  while (struc) // проход по списку и поиск удаляемого элемента
-//	  {
-//			if (strcmp(name, struc->inf) == 0) // если нашли, то
-//			{
-//				  flag = 1;         // выставляем индикатор
-//				  if (struc->next)  // если найденный элемент не последний в списке
-//				  {
-//						prev->next = struc->next; // меняем указатели
-//						free(struc);		    // удаляем  элемент
-//						struc = prev->next; // устанавливаем указатель для продолжения поиска
-//				  }
-//				  else			// если найденный элемент последний в списке
-//				  {
-//						prev->next = NULL; // обнуляем указатель предшествующего элемента
-//						free(struc);	// удаляем  элемент
-//						return;
-//				  }
-//			}
-//			else // если не нашли, то
-//			{
-//				prev = struc; // устанавливаем указатели для продолжения поиска
-//				struc = struc->next;
-//			}
-//	  }
-//
-//	  if (flag == 0)				// если флаг = 0, значит нужный элемент не найден
-//	  {
-//			printf("Элемент не найден\n");
-//			return;
-//	  }
-//
+//	  prev = struc->next;
+//	  head = prev;
+//	  free(struc);
 //
 //}
-//
 //
 //
 //int main(void) {
@@ -506,9 +433,10 @@ int main(void) {
 //	  printf("Символ окончания ввода: - \n");
 //	  spstore();
 //
-//	  while (next == 1)
-//			next = spstore();
+//	  while (n == 1)
+//			n = spstore();
 //	  review();
+//	  del();
 //
 //	  return 0;
 //}
