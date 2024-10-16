@@ -29,8 +29,10 @@ struct Node* CreateTree(struct Node* root, struct Node* r, int data)
 			r->data = data;
 			if (root == NULL) return r;
 
-			if (data > root->data)	root->left = r;
-			else root->right = r;
+			if (data > root->data)
+				  root->left = r;
+			else if (data < root->data) //Условие исключающее добавление одинаковых элементов
+				  root->right = r;
 			return r;
 	  }
 
@@ -72,24 +74,25 @@ struct Node* find(struct Node *r, int l) {
 	  }
 }
 
-int count_in(struct Node* r, int c) {
-	  if (r->data == c) {
-			count += 1;
-			if (r->right != NULL)
-				  count_in(r->right, c);
-	  }
-	  else if (r->data < c && r->left != NULL)
-			count_in(r->left, c);
-	  else if (r->data > c && r->right != NULL)
-			count_in(r->right, c);
-	  else
-			return 0;
-	  return count;
-}
+//int count_in(struct Node* r, int c) {
+//	  if (r->data == c) {
+//			count += 1;
+//			if (r->right != NULL)
+//				  count_in(r->right, c);
+//	  }
+//	  else if (r->data < c && r->left != NULL)
+//			count_in(r->left, c);
+//	  else if (r->data > c && r->right != NULL)
+//			count_in(r->right, c);
+//	  else
+//			return 0;
+//	  return count;
+//}
 
 int main(void) {
 	  setlocale(LC_ALL, "");
-	  int D, H, start = 1;
+	  int D, start = 1;
+	  /*int H;*/
 
 	  root = NULL;
 	  printf("-1 - окончание построения дерева\n");
@@ -112,8 +115,8 @@ int main(void) {
 	  scanf_s("%d", &D);
 	  find(root, D);
 
-	  scanf_s("%d", &H);
-	  printf("Введенное значение найдено %d раз", count_in(root, H));
+	  /*scanf_s("%d", &H);
+	  printf("Введенное значение найдено %d раз", count_in(root, H));*/
 
 	  return 0;
 }
