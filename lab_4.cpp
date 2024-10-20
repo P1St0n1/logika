@@ -13,37 +13,6 @@ struct Node {
 struct Node* root;
 int count = 0;
 
-struct Node* CreateTree(struct Node* root, struct Node* r, int data)
-{
-	  if (r == NULL)
-	  {
-			r = (struct Node*)malloc(sizeof(struct Node));
-			if (r == NULL)
-			{
-				  printf("Ошибка выделения памяти");
-				  exit(0);
-			}
-
-			r->left = NULL;
-			r->right = NULL;
-			r->data = data;
-			if (root == NULL) return r;
-
-			if (data > root->data)
-				  root->left = r;
-			else if (data < root->data) //Условие исключающее добавление одинаковых элементов
-				  root->right = r;
-			return r;
-	  }
-
-	  if (data > r->data)
-			CreateTree(r, r->left, data);
-	  else
-			CreateTree(r, r->right, data);
-
-	  return root;
-}
-
 void print_tree(struct Node* r, int l) {
 
 	  if (r == NULL)
@@ -62,16 +31,51 @@ void print_tree(struct Node* r, int l) {
 }
 
 struct Node* find(struct Node *r, int l) {
-	  if (r->data == l)
+	  if (r->data == l) {
 			return r;
+	  }
 	  else if (r->data < l && r->left != NULL)
 			find(r->left, l);
 	  else if (r->data > l && r->right != NULL)
 			find(r->right, l);
 	  else {
-			printf("Элемент не найден\n");
 			return NULL;
 	  }
+}
+
+struct Node* CreateTree(struct Node* root, struct Node* r, int data)
+{
+	  if (r == NULL)
+	  {
+			r = (struct Node*)malloc(sizeof(struct Node));
+			if (r == NULL)
+			{
+				  printf("Ошибка выделения памяти");
+				  exit(0);
+			}
+
+			r->left = NULL;
+			r->right = NULL;
+			r->data = data;
+			if (root == NULL) return r;
+
+			if (data > root->data)
+				  root->left = r;
+			else
+				  root->right = r;
+			return r;
+	  }
+
+	  if (find(r, data) == NULL) {
+			if (data > r->data)
+				  CreateTree(r, r->left, data);
+			else
+				  CreateTree(r, r->right, data);
+	  }
+	  else
+			printf("Элемент уже был введен\n");
+
+	  return root;
 }
 
 //int count_in(struct Node* r, int c) {
@@ -112,8 +116,8 @@ int main(void) {
 
 	  print_tree(root, 0);
 
-	  scanf_s("%d", &D);
-	  find(root, D);
+	  /*scanf_s("%d", &D);
+	  find(root, D);*/
 
 	  /*scanf_s("%d", &H);
 	  printf("Введенное значение найдено %d раз", count_in(root, H));*/
