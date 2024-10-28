@@ -20,6 +20,7 @@ int main(void) {
 
 	  printf("Введите количество вершин: ");
 	  scanf_s("%d", &n);
+	  printf("Матрица смежности графа G\n");
 
 	  int **G = (int**)malloc(n * sizeof(int*));
 	  for (int i = 0; i < n; i++)
@@ -74,6 +75,38 @@ int main(void) {
 			if (deg[i] == n - 1) printf("Вершина %d - доминирующая\n", i);
 	  }
 
+
+	  //Задание 2.1
+	  // Подсчет количества ребер для создания матрицы инцидентности
+	  int count_edge = 0;
+	  for (int i = 0; i < n; i++) {
+			for (int j = i + 1; j < n; j++)
+				  if (G[i][j] != 0)
+						count_edge++;
+	  }
+	  // Выделение памяти для матрицы инцидентности
+	  int **incidenceMatrix = (int**)malloc(n * sizeof(int*));
+	  for (int i = 0; i < n; i++) {
+			incidenceMatrix[i] = (int*)malloc(count_edge * sizeof(int));
+			for (int j = 0; j < count_edge; j++)
+				  incidenceMatrix[i][j] = 0;
+	  }
+	  // Заполнение матрицы инцидентности
+	  int edgeIndex = 0;
+	  for (int i = 0; i < n; i++)
+			for (int j = i + 1; j < n; j++)
+				  if (G[i][j] != 0) {
+						incidenceMatrix[i][edgeIndex] = 1;
+						incidenceMatrix[j][edgeIndex] = 1;
+						edgeIndex++;
+				  }
+	  // Вывод матрицы инцидентности
+	  printf("\nМатрица инцидентности:\n");
+	  for (int i = 0; i < n; i++) {
+			for (int j = 0; j < count_edge; j++)
+				  printf("%d ", incidenceMatrix[i][j]);
+			printf("\n");
+	  }
 
 	  return 0;
 }
