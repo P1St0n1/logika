@@ -84,7 +84,6 @@ int main(void) {
 				  if (G[i][j] != 0)
 						count_edge++;
 	  }
-	  // Выделение памяти для матрицы инцидентности
 	  int **incidenceMatrix = (int**)malloc(n * sizeof(int*));
 	  for (int i = 0; i < n; i++) {
 			incidenceMatrix[i] = (int*)malloc(count_edge * sizeof(int));
@@ -100,12 +99,34 @@ int main(void) {
 						incidenceMatrix[j][edgeIndex] = 1;
 						edgeIndex++;
 				  }
-	  // Вывод матрицы инцидентности
 	  printf("\nМатрица инцидентности:\n");
 	  for (int i = 0; i < n; i++) {
 			for (int j = 0; j < count_edge; j++)
 				  printf("%d ", incidenceMatrix[i][j]);
 			printf("\n");
+	  }
+
+	  //Задание 2.2
+	  printf("Размер графа = %d\n", count_edge);
+
+	  //Задание 2.3
+	  int* deg_inc = (int*)malloc(n * sizeof(int));
+	  for (int i = 0; i < n; i++)
+			deg_inc[i] = 0;
+	  for (int i = 0; i < n; i++) {
+			for (int j = 0; j < count_edge; j++) {
+				  if (incidenceMatrix[i][j] != 0)
+						deg_inc[i]++;
+			}
+	  }
+
+	  for (int i = 0; i < n; i++)
+			printf("Степень вершины %d = %d\n", i, deg_inc[i]);
+
+	  for (int i = 0; i < n; i++) {
+			if (deg_inc[i] == 0) printf("Вершина %d - изолированная\n", i);
+			if (deg_inc[i] == 1) printf("Вершина %d - концевая\n", i);
+			if (deg_inc[i] == n - 1) printf("Вершина %d - доминирующая\n", i);
 	  }
 
 	  return 0;
